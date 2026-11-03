@@ -1,24 +1,41 @@
 name: Terraform CI Pipeline
 
 on:
-  workflow_dispatch:
+workflow_dispatch:
 
 jobs:
-  terraform:
-    runs-on: [self-hosted, amazonlinux, dev]
+terraform:
+runs-on: [self-hosted, amazonlinux, dev]
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
 
-      - name: Terraform Init
-        run: terraform init
+steps:
+  - name: Checkout Code
+    uses: actions/checkout@v4
 
-      - name: Terraform Validate
-        run: terraform validate
+  - name: Debug Environment
+    run: |
+      echo "Checking runner environment"
+      pwd
+      echo "$PATH"
+      which bash
+      which sudo
+      which terraform
+      terraform version
+    shell: /bin/bash
 
-      - name: Terraform Plan
-        run: terraform plan
+  - name: Terraform Init
+    run: terraform init
+    shell: /bin/bash
 
-      - name: Terraform Apply
-        run: terraform apply -auto-approve
+  - name: Terraform Validate
+    run: terraform validate
+    shell: /bin/bash
+
+  - name: Terraform Plan
+    run: terraform plan
+    shell: /bin/bash
+
+  - name: Terraform Apply
+    run: terraform apply -auto-approve
+    shell: /bin/bash
+
